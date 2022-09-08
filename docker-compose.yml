@@ -12,7 +12,7 @@ services:
     hostname: wordpress
     restart: on-failure
     ports:
-      - 8888:8080
+      - ${WORDPRESS_HTTP_PORT:-8888}:8080
     volumes:
       - "wordpress_data:/bitnami/wordpress"
       - "opt_bitnami_data:/opt/bitnami/wordpress"
@@ -55,7 +55,7 @@ services:
   # https://docs.linuxserver.io/images/docker-openssh-server
   # https://github.com/linuxserver/docker-openssh-server/pkgs/container/openssh-server
   ssh-dev:
-    image: ghcr.io/linuxserver/openssh-server:2021.11.21
+    image: ghcr.io/linuxserver/openssh-server:8.8_p1-r1-ls91
     hostname: openssh-server
     ports:
       - '62222:2222'
@@ -70,11 +70,16 @@ services:
       GUID: "0"
 
     volumes:
-      - "./ssh_key.pub:/tmp/key.pub"  # see the README.md file on how to regenerate the public key
+      # see the README.md file on how to regenerate the public key
+      - "./ssh_key.pub:/tmp/key.pub"
 
       # allow modifying WordPress files via SSH
       - "wordpress_data:/bitnami/wordpress"
       - "opt_bitnami_data:/opt/bitnami/wordpress"
+
+      # Install php-cli inside the ssh container
+      # https://www.linuxserver.io/blog/2019-09-14-customizing-our-containers
+      - ./open-ssh-install-php.sh:/custom-cont-init.d/open-ssh-install-php.sh:ro
 
 volumes:
 
