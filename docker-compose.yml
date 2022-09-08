@@ -15,6 +15,7 @@ services:
       - 8888:8080
     volumes:
       - "wordpress_data:/bitnami/wordpress"
+      - "opt_bitnami_data:/opt/bitnami/wordpress"
     environment:
       WORDPRESS_BLOG_NAME: 'My test Bitnami WordPress'
       WORDPRESS_DATABASE_NAME: wp_db
@@ -25,6 +26,12 @@ services:
       # make sure WordPress knows its web address
       # https://wordpress.org/support/article/changing-the-site-url/
       # WORDPRESS_EXTRA_WP_CONFIG_CONTENT: "define('WP_HOME','$$WP_HOME');define('WP_SITEURL','$$WP_HOME');"
+
+    healthcheck:
+      test: 'curl http://0.0.0.0:8080/wp-json/ -sI -H "User-Agent: curl/healthcheck"'
+      interval: 1m
+      timeout: 1s
+      retries: 5
 
   # https://github.com/bitnami/bitnami-docker-mariadb
   db-dev:
@@ -45,7 +52,32 @@ services:
       timeout: 5s
       retries: 10
 
+  # https://docs.linuxserver.io/images/docker-openssh-server
+  # https://github.com/linuxserver/docker-openssh-server/pkgs/container/openssh-server
+  ssh-dev:
+    image: ghcr.io/linuxserver/openssh-server:2021.11.21
+    hostname: openssh-server
+    ports:
+      - '62222:2222'
+    environment:
+      PASSWORD_ACCESS: 'true'
+      USER_NAME: wordpress
+      USER_PASSWORD: ${SSH_PASSWORD:-p4ssw0rd}
+      PUBLIC_KEY_FILE: /tmp/key.pub  # see "volumes" below
+      # ensure permissions to the file match those from the wordpress image
+      # https://docs.linuxserver.io/images/docker-openssh-server#user-group-identifiers
+      PUID: "1001"
+      GUID: "0"
+
+    volumes:
+      - "./ssh_key.pub:/tmp/key.pub"  # see the README.md file on how to regenerate the public key
+
+      # allow modifying WordPress files via SSH
+      - "wordpress_data:/bitnami/wordpress"
+      - "opt_bitnami_data:/opt/bitnami/wordpress"
+
 volumes:
 
   mariadb:
+  opt_bitnami_data:
   wordpress_data:
