@@ -1,0 +1,51 @@
+# This file is used to set up a WordPress instance that uses Bitnami images
+#
+# It expects WP_HOME and WORDPRESS_DATABASE_PASSWORD env variables to be set
+version: "3.4"
+
+services:
+
+  # https://hub.docker.com/r/bitnami/wordpress/
+  # wp-content files are owned by 1001:root
+  wordpress:
+    image: bitnami/wordpress:6.0.2
+    hostname: wordpress
+    restart: on-failure
+    ports:
+      - 8888:8080
+    volumes:
+      - "wordpress_data:/bitnami/wordpress"
+    environment:
+      WORDPRESS_BLOG_NAME: 'My test Bitnami WordPress'
+      WORDPRESS_DATABASE_NAME: wp_db
+      WORDPRESS_DATABASE_USER: wp_user
+      WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
+      WORDPRESS_DEBUG: 'true'  # https://wordpress.org/support/article/debugging-in-wordpress/
+
+      # make sure WordPress knows its web address
+      # https://wordpress.org/support/article/changing-the-site-url/
+      # WORDPRESS_EXTRA_WP_CONFIG_CONTENT: "define('WP_HOME','$$WP_HOME');define('WP_SITEURL','$$WP_HOME');"
+
+  # https://github.com/bitnami/bitnami-docker-mariadb
+  db-dev:
+    image: docker.io/bitnami/mariadb:10.6
+    hostname: mariadb
+    environment:
+      MARIADB_DATABASE: wp_db
+      MARIADB_USER: wp_user
+      MARIADB_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
+      MARIADB_ROOT_PASSWORD: r00t
+      MARIADB_SKIP_TEST_DB: 'yes'
+    volumes:
+      - mariadb:/bitnami/mariadb
+    healthcheck:
+      # use $$ to escape env variables
+      test: 'mysql --user=$$MARIADB_USER --password=$$MARIADB_PASSWORD $$MARIADB_DATABASE -e "SHOW TABLES"'
+      interval: 30s
+      timeout: 5s
+      retries: 10
+
+volumes:
+
+  mariadb:
+  wordpress_data:
