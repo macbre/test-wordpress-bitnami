@@ -69,8 +69,14 @@ services:
       PUID: "1001"
       GUID: "0"
 
+      # expose these variables so that the shell will see them (see open-ssh-setup-env-vars.sh script below)
+      # wp-load.php is required in the SSH container and it needs to connect to the database
+      WORDPRESS_DATABASE_NAME: wp_db
+      WORDPRESS_DATABASE_USER: wp_user
+      WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
+
     volumes:
-      # see the README.md file on how to regenerate the public key
+      # see the README.md file on how to regenerate the keys pair
       - "./ssh_key.pub:/tmp/key.pub"
 
       # allow modifying WordPress files via SSH
@@ -79,7 +85,7 @@ services:
 
       # Install php-cli inside the ssh container
       # https://www.linuxserver.io/blog/2019-09-14-customizing-our-containers
-      - ./open-ssh-install-php.sh:/custom-cont-init.d/open-ssh-install-php.sh:ro
+      - ./open-ssh-setup.sh:/custom-cont-init.d/open-ssh-setup.sh:ro
 
 volumes:
 
