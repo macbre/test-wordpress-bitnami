@@ -19,6 +19,16 @@ You can provide some env variables via `.env` file:
 
 > You can use `head -c 500 /dev/urandom | md5 | base64` to generate them.
 
+## Automated posts publishing
+
+Call `./publish.sh` from your crontab:
+
+```
+17 */4 *   *   *     /path/to/publish.sh 2>&1 | tee -a $HOME/publish.log
+```
+
+> Make sure `$PATH` is properly set up in the crontab.
+
 ## Debugging 
 
 You can access the running WordPress container via:
