@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 log() {
@@ -18,7 +18,9 @@ CONTENT=$( curl -s 'https://baconipsum.com/api/?type=meat-and-filler' | jq -r .[
 log "Will post the following content as '${TITLE}': ${CONTENT}"
 
 set -x
-docker-compose -f ${DIRECTORY}/docker-compose.yml exec wordpress \
+
+# -T disable pseudo-tty allocation
+docker-compose -f ${DIRECTORY}/docker-compose.yml exec -T wordpress \
 	wp post create --post_title="${TITLE}" --post_content="${CONTENT}" --post_status='publish'
 
 set +x
