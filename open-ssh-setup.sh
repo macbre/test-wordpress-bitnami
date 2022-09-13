@@ -26,8 +26,6 @@ echo "WORDPRESS_DATABASE_NAME=${WORDPRESS_DATABASE_NAME}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_PASSWORD=${WORDPRESS_DATABASE_PASSWORD}" >> ${SCRIPT_NAME}
 
-cat ${SCRIPT_NAME}
-
 # tweak sshd configuration // https://www.freebsd.org/cgi/man.cgi?sshd_config(5)
 
 # allow ~/.ssh/environment file to set env variables
