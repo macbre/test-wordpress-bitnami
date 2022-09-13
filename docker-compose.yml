@@ -37,6 +37,7 @@ services:
   db-dev:
     image: docker.io/bitnami/mariadb:10.6
     hostname: mariadb
+    restart: on-failure
     environment:
       MARIADB_DATABASE: wp_db
       MARIADB_USER: wp_user
@@ -57,6 +58,7 @@ services:
   ssh-dev:
     image: ghcr.io/linuxserver/openssh-server:8.8_p1-r1-ls91
     hostname: openssh-server
+    restart: on-failure
     ports:
       - '62222:2222'
     environment:
