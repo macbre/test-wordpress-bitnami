@@ -1,7 +1,7 @@
 test-wordpress-bitname
 ======================
 
-This repo contains the Docker Compose setup for [the Bitnami-powered WordPress instance](https://hub.docker.com/r/bitnami/wordpress/) with SSH access.
+This repo contains the Docker Compose setup for [the Bitnami-powered WordPress instance](https://hub.docker.com/r/bitnami/wordpress/) with SSH access and `wp-cli` installed.
 
 Once `docker-compose up -d` is run (and the MySQL and WordPress is set up for the first time) you can:
 
@@ -18,6 +18,19 @@ You can provide some env variables via `.env` file:
 * `WORDPRESS_HTTP_PORT` (defaults to `8888`)
 
 > You can use `head -c 500 /dev/urandom | md5 | base64` to generate them.
+
+## `wp-cli`
+
+[`wp-cli` tool](https://wp-cli.org/) is installed in both WordPress and SSH containers.
+
+```
+$ docker-compose exec ssh-dev wp post list --path=/opt/bitnami/wordpress/
++----+--------------+-------------+---------------------+-------------+
+| ID | post_title   | post_name   | post_date           | post_status |
++----+--------------+-------------+---------------------+-------------+
+| 1  | Hello world! | hello-world | 2022-09-08 11:55:08 | publish     |
++----+--------------+-------------+---------------------+-------------+
+```
 
 ## Automated posts publishing
 
@@ -55,5 +68,5 @@ lrwxrwxrwx  1 wordpress root   29 Sep  8 11:55 wp-content -> /bitnami/wordpress/
 ## Regenerate OpenSSH public key
 
 ```
-ssh-keygen -f ssh_key -N ''
+ssh-keygen -t ed25519 -f ssh_key -N ''
 ```

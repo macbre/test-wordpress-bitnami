@@ -37,3 +37,17 @@ echo "PrintMotd yes" >> /etc/ssh/sshd_config
 echo "> Redirecting OpenSSH daemon logs to stderr ..."
 echo "tail -f /config/logs/openssh/current >> /dev/stderr" > /sbin/logs_to_stderr.sh
 sh /sbin/logs_to_stderr.sh &
+
+#
+#
+#
+
+# https://wp-cli.org/#installing
+echo "> Installing wp-cli ..."
+cd /tmp && \
+	apk add php8-phar php8-mbstring && \
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	chmod +x wp-cli.phar && \
+	sudo mv wp-cli.phar /usr/local/bin/wp && \
+	wp --info
+
