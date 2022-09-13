@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e  # Fail on error
+set -u  # Treat unset variables as an error and exit immediately
+
 echo "> Installing PHP extensions and some utilities ..."
 
 apk update && \
@@ -47,11 +51,22 @@ sh /sbin/logs_to_stderr.sh &
 # https://wp-cli.org/#installing
 echo "> Installing wp-cli ..."
 cd /tmp && \
-	apk add php8-phar php8-mbstring && \
+	apk add php8-phar php8-mbstring php8-tokenizer && \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
 	sudo mv wp-cli.phar /usr/local/bin/wp && \
+	cd /opt/bitnami/wordpress && \
 	wp --info
+
+#
+#
+#
+echo "> Setting WP_HOME and WP_SITEURL configs to '${WORDPRESS_SITE_URL}' ... "
+
+cd /opt/bitnami/wordpress && \
+	wp config set WP_HOME ${WORDPRESS_SITE_URL} && \
+	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
+	wp config get --format=dotenv | grep 'WP_'
 
 #
 #

@@ -78,6 +78,9 @@ services:
       WORDPRESS_DATABASE_USER: wp_user
       WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
 
+      # set up the wp-config.php
+      WORDPRESS_SITE_URL: ${WORDPRESS_SITE_URL:-http://localhost:8888}
+
     volumes:
       # see the README.md file on how to regenerate the keys pair
       - "./ssh_key.pub:/config/.ssh/key.pub:ro"
