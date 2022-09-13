@@ -53,17 +53,17 @@ docker-compose exec -i wordpress bash
 And use SSH to get access to the WordPress file:
 
 ```
-ssh wordpress@0.0.0.0 -p62222
+ssh wordpress@0.0.0.0 -p62222 -i ssh_key
 
 openssh-server:~$ ls -lh /opt/bitnami/wordpress | grep '/bitnami'
-lrwxrwxrwx  1 wordpress root   32 Sep  8 11:55 wp-config.php -> /bitnami/wordpress/wp-config.php
-lrwxrwxrwx  1 wordpress root   29 Sep  8 11:55 wp-content -> /bitnami/wordpress/wp-content
+lrwxrwxrwx  1 wordpress root        32 Sep 13 12:08 wp-config.php -> /bitnami/wordpress/wp-config.php
+lrwxrwxrwx  1 wordpress root        29 Sep 13 12:08 wp-content -> /bitnami/wordpress/wp-content
 ```
 
 ## Files and permissions
 
 * The WordPress instance is located at `/opt/bitnami/wordpress`.
-* `wp-content` files are owned by `1001:root`.
+* WordPress files are owned by `wordpress(1001):root`.
 
 ## Regenerate OpenSSH public key
 

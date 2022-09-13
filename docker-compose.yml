@@ -66,7 +66,7 @@ services:
       PASSWORD_ACCESS: 'true'
       USER_NAME: wordpress
       USER_PASSWORD: ${SSH_PASSWORD:-p4ssw0rd}
-      PUBLIC_KEY_FILE: /tmp/key.pub  # see "volumes" below
+      PUBLIC_KEY_FILE: /config/.ssh/key.pub  # see "volumes" below
       # ensure permissions to the file match those from the wordpress image
       # https://docs.linuxserver.io/images/docker-openssh-server#user-group-identifiers
       PUID: "1001"
@@ -80,7 +80,7 @@ services:
 
     volumes:
       # see the README.md file on how to regenerate the keys pair
-      - "./ssh_key.pub:/tmp/key.pub"
+      - "./ssh_key.pub:/config/.ssh/key.pub:ro"
 
       # allow modifying WordPress files via SSH
       - "wordpress_data:/bitnami/wordpress"
