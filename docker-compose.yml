@@ -24,9 +24,8 @@ services:
       WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
       WORDPRESS_DEBUG: 'true'  # https://wordpress.org/support/article/debugging-in-wordpress/
 
-      # make sure WordPress knows its web address
-      # https://wordpress.org/support/article/changing-the-site-url/
-      # WORDPRESS_EXTRA_WP_CONFIG_CONTENT: "define('WP_HOME','$$WP_HOME');define('WP_SITEURL','$$WP_HOME');"
+      # make sure Jetpack uses our custom HTTP PORT
+      WORDPRESS_EXTRA_WP_CONFIG_CONTENT: "define( 'JETPACK_SIGNATURE__HTTP_PORT', 8080 );"
 
     healthcheck:
       test: 'curl http://0.0.0.0:8080/wp-json/ -sI -H "User-Agent: curl/healthcheck"'
