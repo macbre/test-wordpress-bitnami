@@ -5,10 +5,11 @@ version: "3.4"
 
 services:
 
-  # https://hub.docker.com/r/bitnami/wordpress/
+  # https://hub.docker.com/r/bitnami/wordpress-nginx/
+  # https://github.com/bitnami/containers/tree/main/bitnami/wordpress-nginx#readme
   # wp-content files are owned by 1001:root
   wordpress:
-    image: bitnami/wordpress:6.0.2
+    image: bitnami/wordpress-nginx:6.0.2
     hostname: wordpress
     restart: on-failure
     ports:
@@ -65,7 +66,7 @@ services:
       PASSWORD_ACCESS: 'true'
       USER_NAME: wordpress
       USER_PASSWORD: ${SSH_PASSWORD:-p4ssw0rd}
-      PUBLIC_KEY_FILE: /tmp/key.pub  # see "volumes" below
+      PUBLIC_KEY_FILE: /config/.ssh/key.pub  # see "volumes" below
       # ensure permissions to the file match those from the wordpress image
       # https://docs.linuxserver.io/images/docker-openssh-server#user-group-identifiers
       PUID: "1001"
@@ -77,9 +78,12 @@ services:
       WORDPRESS_DATABASE_USER: wp_user
       WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
 
+      # set up the wp-config.php
+      WORDPRESS_SITE_URL: ${WORDPRESS_SITE_URL:-http://localhost:8888}
+
     volumes:
       # see the README.md file on how to regenerate the keys pair
-      - "./ssh_key.pub:/tmp/key.pub"
+      - "./ssh_key.pub:/config/.ssh/key.pub:ro"
 
       # allow modifying WordPress files via SSH
       - "wordpress_data:/bitnami/wordpress"

@@ -1,9 +1,14 @@
-#!/bin/sh
-echo "> Installing PHP extensions ..."
+#!/bin/bash
+
+set -e  # Fail on error
+set -u  # Treat unset variables as an error and exit immediately
+
+echo "> Installing PHP extensions and some utilities ..."
 
 apk update && \
+	apk add vim && \
 	apk add php8-cli php8-mysqli && \
-	ln -s /usr/bin/php8 /usr/bin/php && \
+	ln -sf /usr/bin/php8 /usr/bin/php && \
 	php -v && php -m
 
 #
@@ -16,11 +21,10 @@ echo "> Setting up env variables for database access ..."
 
 SCRIPT_NAME='/config/.ssh/environment'
 
+echo "# populates env variables for SSH sessions" > ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_NAME=${WORDPRESS_DATABASE_NAME}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_PASSWORD=${WORDPRESS_DATABASE_PASSWORD}" >> ${SCRIPT_NAME}
-
-cat ${SCRIPT_NAME}
 
 # tweak sshd configuration // https://www.freebsd.org/cgi/man.cgi?sshd_config(5)
 
@@ -45,9 +49,27 @@ sh /sbin/logs_to_stderr.sh &
 # https://wp-cli.org/#installing
 echo "> Installing wp-cli ..."
 cd /tmp && \
-	apk add php8-phar php8-mbstring && \
+	apk add php8-phar php8-mbstring php8-tokenizer && \
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
 	sudo mv wp-cli.phar /usr/local/bin/wp && \
+	cd /opt/bitnami/wordpress && \
 	wp --info
 
+#
+#
+#
+echo "> Setting WP_HOME and WP_SITEURL configs to '${WORDPRESS_SITE_URL}' ... "
+
+cd /opt/bitnami/wordpress && \
+	wp config set WP_HOME ${WORDPRESS_SITE_URL} && \
+	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
+	wp config get --format=dotenv | grep 'WP_'
+
+#
+#
+#
+
+echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
+
+chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
