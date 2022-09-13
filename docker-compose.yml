@@ -5,10 +5,11 @@ version: "3.4"
 
 services:
 
-  # https://hub.docker.com/r/bitnami/wordpress/
+  # https://hub.docker.com/r/bitnami/wordpress-nginx/
+  # https://github.com/bitnami/containers/tree/main/bitnami/wordpress-nginx#readme
   # wp-content files are owned by 1001:root
   wordpress:
-    image: bitnami/wordpress:6.0.2
+    image: bitnami/wordpress-nginx:6.0.2
     hostname: wordpress
     restart: on-failure
     ports:
