@@ -1,7 +1,8 @@
 #!/bin/sh
-echo "> Installing PHP extensions ..."
+echo "> Installing PHP extensions and some utilities ..."
 
 apk update && \
+	apk add vim && \
 	apk add php8-cli php8-mysqli && \
 	ln -sf /usr/bin/php8 /usr/bin/php && \
 	php -v && php -m
@@ -56,6 +57,6 @@ cd /tmp && \
 #
 #
 
-echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress ..."
+echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
 
-chown -vv -RP 1001 /opt/bitnami/wordpress/
+chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
