@@ -3,7 +3,7 @@ echo "> Installing PHP extensions ..."
 
 apk update && \
 	apk add php8-cli php8-mysqli && \
-	ln -s /usr/bin/php8 /usr/bin/php && \
+	ln -sf /usr/bin/php8 /usr/bin/php && \
 	php -v && php -m
 
 #
@@ -16,6 +16,7 @@ echo "> Setting up env variables for database access ..."
 
 SCRIPT_NAME='/config/.ssh/environment'
 
+echo "# populates env variables for SSH sessions" > ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_NAME=${WORDPRESS_DATABASE_NAME}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}" >> ${SCRIPT_NAME}
 echo "WORDPRESS_DATABASE_PASSWORD=${WORDPRESS_DATABASE_PASSWORD}" >> ${SCRIPT_NAME}
@@ -51,3 +52,10 @@ cd /tmp && \
 	sudo mv wp-cli.phar /usr/local/bin/wp && \
 	wp --info
 
+#
+#
+#
+
+echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress ..."
+
+chown -vv -RP 1001 /opt/bitnami/wordpress/
