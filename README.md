@@ -1,4 +1,4 @@
-test-wordpress-bitname
+test-wordpress-bitnami
 ======================
 [![Test containers](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml/badge.svg)](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml)
 
