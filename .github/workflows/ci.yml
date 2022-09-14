@@ -22,6 +22,7 @@ jobs:
         docker-compose up -d
 
     - name: Wait for the WordPress container to be up
+      timeout-minutes: 1
       run: |
           docker ps
 
@@ -60,6 +61,9 @@ jobs:
 
           # are DB-related env set?
           ssh_wp env | grep WORDPRESS_DATABASE_NAME=wp_db
+
+          # list config settings
+          ssh_wp wp --path=/opt/bitnami/wordpress/ config get --format=dotenv
 
     - name: Show logs
       if: ${{ always() }}  # run this step regardless of the tests failing or passing

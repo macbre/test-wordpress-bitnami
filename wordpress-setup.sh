@@ -35,5 +35,12 @@ cd /opt/bitnami/wordpress && \
 	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
 	wp config get --format=dotenv | grep 'WP_'
 
+#
+#
+#
+echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
+
 # bring back the read-only file permissions
 chmod 440 /bitnami/wordpress/wp-config.php
+
+chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php

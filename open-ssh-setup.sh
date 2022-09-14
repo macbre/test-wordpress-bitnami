@@ -57,11 +57,3 @@ cd /tmp && \
 	sudo mv wp-cli.phar /usr/local/bin/wp && \
 	cd /opt/bitnami/wordpress && \
 	wp --info
-
-#
-#
-#
-
-echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
-
-chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
