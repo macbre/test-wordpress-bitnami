@@ -59,13 +59,13 @@ jobs:
           alias ssh_wp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o "LogLevel ERROR" -p 62222 wordpress@localhost -i ssh_key'
 
           # can we use the wp-cli?
-          ssh_wp wp --path=/opt/bitnami/wordpress post list --format=json | jq .
+          ssh_wp wp post list --format=json | jq .
 
           # are DB-related env set?
           ssh_wp env | grep WORDPRESS_DATABASE_NAME=wp_db
 
           # list config settings
-          ssh_wp wp --path=/opt/bitnami/wordpress/ config get --format=dotenv
+          ssh_wp wp config get --format=dotenv | grep WP_
 
           # list files
           ssh_wp id

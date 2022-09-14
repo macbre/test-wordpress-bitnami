@@ -68,3 +68,16 @@ set -x
 chmod 640 /bitnami/wordpress/wp-config.php || true
 
 chown -RP ${PUID} /bitnami/wordpress/ /opt/bitnami/wordpress/ || true
+
+#
+#
+#
+
+echo "> Setting the home directory for wordpress user ..."
+
+mkdir -p /home/wordpress/ && \
+	cp -r /config/.ssh /home/wordpress/.ssh && \
+	chown -RP wordpress:wordpress /home/wordpress/ && \
+	chmod go-w /bitnami/wordpress/
+
+usermod --home=/home/wordpress wordpress
