@@ -22,7 +22,7 @@ jobs:
         docker-compose up -d
 
     - name: Wait for the WordPress container to be up
-      timeout-minutes: 1
+      timeout-minutes: 2
       run: |
           docker ps
 
