@@ -38,9 +38,9 @@ cd /opt/bitnami/wordpress && \
 #
 #
 #
-echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
+echo "> Making the SSH user (id 1001) the owner of wp-config.php file ..."
 
 # bring back the read-only file permissions
 chmod 440 /bitnami/wordpress/wp-config.php
 
-chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
+chown -RP 1001 /bitnami/wordpress/wp-config.php
