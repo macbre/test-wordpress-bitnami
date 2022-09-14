@@ -65,6 +65,8 @@ cd /tmp && \
 echo "> Waiting for the WordPress instance to be up before tweaking its config "
 
 while true; do
+	curl wordpress:8080 -sI | grep Server || true
+
 	if [[ $(curl wordpress:8080 -sI | grep Server || true) == "Server: nginx" ]]; then
 		break
 	fi
