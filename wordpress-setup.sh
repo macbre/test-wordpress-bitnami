@@ -3,6 +3,13 @@
 set -e  # Fail on error
 set -u  # Treat unset variables as an error and exit immediately
 
+echo "> whoami and file permissions"
+id
+chmod 640 /bitnami/wordpress/wp-config.php
+
+#
+#
+#
 echo "> wp-cli information"
 
 cd /opt/bitnami/wordpress && \
@@ -27,3 +34,6 @@ cd /opt/bitnami/wordpress && \
 	wp config set WP_HOME ${WORDPRESS_SITE_URL} && \
 	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
 	wp config get --format=dotenv | grep 'WP_'
+
+# bring back the read-only file permissions
+chmod 440 /bitnami/wordpress/wp-config.php
