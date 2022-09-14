@@ -39,6 +39,8 @@ echo "PrintMotd yes" >> /etc/ssh/sshd_config
 #
 
 echo "> Redirecting OpenSSH daemon logs to stderr ..."
+mkdir -p /config/logs/openssh && touch /config/logs/openssh/current && chown 1001 /config/logs/openssh/current # make sure log file is there
+
 echo "tail -f /config/logs/openssh/current >> /dev/stderr" > /sbin/logs_to_stderr.sh
 sh /sbin/logs_to_stderr.sh &
 
@@ -59,27 +61,10 @@ cd /tmp && \
 #
 #
 #
-echo "> Enabling auto-updates so that the site is considered healthy by WordPress tools ..."
 
-cd /opt/bitnami/wordpress && \
-	wp config set WP_AUTO_UPDATE_CORE true --raw && \
-	wp plugin auto-updates enable --all && \
-	wp theme auto-updates enable --all
+echo "> Making the SSH user (id ${PUID}) the owner of /opt/bitnami/wordpress/ ..."
 
-#
-#
-#
-echo "> Setting WP_HOME and WP_SITEURL configs to '${WORDPRESS_SITE_URL}' ... "
+set -x
+chmod 640 /bitnami/wordpress/wp-config.php || true
 
-cd /opt/bitnami/wordpress && \
-	wp config set WP_HOME ${WORDPRESS_SITE_URL} && \
-	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
-	wp config get --format=dotenv | grep 'WP_'
-
-#
-#
-#
-
-echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
-
-chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
+chown -RP ${PUID} /bitnami/wordpress/ /opt/bitnami/wordpress/ || true
