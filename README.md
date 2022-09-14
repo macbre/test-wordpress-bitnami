@@ -26,7 +26,7 @@ You can provide some env variables via `.env` file:
 [`wp-cli` tool](https://wp-cli.org/) is installed in both WordPress and SSH containers.
 
 ```
-$ docker-compose exec ssh-dev wp post list --path=/opt/bitnami/wordpress/
+$ docker-compose exec ssh-dev wp post list
 +----+--------------+-------------+---------------------+-------------+
 | ID | post_title   | post_name   | post_date           | post_status |
 +----+--------------+-------------+---------------------+-------------+
