@@ -39,7 +39,7 @@ echo "PrintMotd yes" >> /etc/ssh/sshd_config
 #
 
 echo "> Redirecting OpenSSH daemon logs to stderr ..."
-mkdir -p /config/logs/openssh && touch /config/logs/openssh/current # make sure log file is there
+mkdir -p /config/logs/openssh && touch /config/logs/openssh/current && chown 1001 /config/logs/openssh/current # make sure log file is there
 
 echo "tail -f /config/logs/openssh/current >> /dev/stderr" > /sbin/logs_to_stderr.sh
 sh /sbin/logs_to_stderr.sh &
