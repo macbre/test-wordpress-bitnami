@@ -30,7 +30,8 @@ services:
 
     volumes:
       # run the setup script after WordPress container is set up
-      - "./wordpress-setup.sh:/post-init.d/wordpress-setup.sh:ro"
+      # @see https://github.com/bitnami/containers/blob/main/bitnami/wordpress-nginx/6/debian-11/rootfs/post-init.sh
+      - "./wordpress-setup.sh:/docker-entrypoint-init.d/wordpress-setup.sh:ro"
 
       # data persistency and sharing with SSH container
       - "wordpress_data:/bitnami/wordpress"
