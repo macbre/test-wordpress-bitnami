@@ -75,7 +75,7 @@ services:
       PASSWORD_ACCESS: 'true'
       USER_NAME: wordpress
       USER_PASSWORD: ${SSH_PASSWORD:-p4ssw0rd}
-      PUBLIC_KEY_FILE: /config/.ssh/key.pub  # see "volumes" below
+      PUBLIC_KEY_FILE: /config/.ssh_key.pub  # see "volumes" below
       # ensure permissions to the file match those from the wordpress image
       # https://docs.linuxserver.io/images/docker-openssh-server#user-group-identifiers
       PUID: "1001"
@@ -89,7 +89,7 @@ services:
 
     volumes:
       # see the README.md file on how to regenerate the keys pair
-      - "./ssh_key.pub:/config/.ssh/key.pub:ro"
+      - "./ssh_key.pub:/config/.ssh_key.pub"
 
       # allow modifying WordPress files via SSH
       - "wordpress_data:/bitnami/wordpress"
@@ -98,6 +98,10 @@ services:
       # Install php-cli inside the ssh container
       # https://www.linuxserver.io/blog/2019-09-14-customizing-our-containers
       - ./open-ssh-setup.sh:/custom-cont-init.d/open-ssh-setup.sh:ro
+
+      # wp-cli YAML config file
+      # https://make.wordpress.org/cli/handbook/references/config/#config-files
+      - ./wp-cli-config.yml:/home/wordpress/.wp-cli/config.yml:ro
 
 volumes:
 
