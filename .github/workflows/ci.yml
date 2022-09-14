@@ -1,0 +1,62 @@
+name: Test containers
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Pull images
+      run: docker-compose pull
+
+    - name: Set up and start the containers
+      run: |
+        set -x
+        ssh-keygen -t ed25519 -f ssh_key -N ''
+        docker-compose up -d
+
+    - name: Wait for the WordPress container to be up
+      run: |
+          docker ps
+
+          echo -n "Waiting for the WordPress container "
+          while true; do
+            if [[ $(docker inspect test-wordpress-bitnami-wordpress-1 | jq -r .[].State.Health.Status) == "healthy" ]]; then
+              break
+            fi
+            echo -n '.'
+            sleep 1
+          done
+
+          echo
+          docker ps
+
+    - name: Is WordPress up and running?
+      run: |
+        curl 0.0.0.0:8888 -sI | grep wp-json
+        curl 0.0.0.0:8888 -sI | grep nginx
+
+    - name: Can we log in via SSH?
+      run: |
+          # check the SSH server
+          ssh-keyscan -p62222 localhost
+
+          # set up ssh command alias + check SSH connection
+          shopt -s expand_aliases
+          alias ssh_wp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o "LogLevel ERROR" -p 62222 wordpress@localhost -i ssh_key'
+
+          # can we use the wp-cli?
+          ssh_wp wp --path=/opt/bitnami/wordpress post list --format=json | jq .
+
+          # are DB-related env set?
+          ssh_wp env | grep WORDPRESS_DATABASE_NAME=wp_db
+
+    - name: Show logs
+      if: ${{ always() }}  # run this step regardless of the tests failing or passing
+      run: docker-compose logs
