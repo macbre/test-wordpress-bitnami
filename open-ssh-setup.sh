@@ -62,46 +62,6 @@ cd /tmp && \
 #
 #
 
-echo "> Waiting for the WordPress instance to be up before tweaking its config "
-
-while true; do
-	curl wordpress:8080 -sI | grep Server || true
-
-	if [[ $(curl wordpress:8080 -sI | grep Server || true) == "Server: nginx" ]]; then
-		break
-	fi
-	echo -n '.'
-	sleep 1
-done
-
-echo
-
-curl wordpress:8080 -I
-
-#
-#
-#
-echo "> Enabling auto-updates so that the site is considered healthy by WordPress tools ..."
-
-cd /opt/bitnami/wordpress && \
-	wp config set WP_AUTO_UPDATE_CORE true --raw && \
-	wp plugin auto-updates enable --all && \
-	wp theme auto-updates enable --all
-
-#
-#
-#
-echo "> Setting WP_HOME and WP_SITEURL configs to '${WORDPRESS_SITE_URL}' ... "
-
-cd /opt/bitnami/wordpress && \
-	wp config set WP_HOME ${WORDPRESS_SITE_URL} && \
-	wp config set WP_SITEURL ${WORDPRESS_SITE_URL} && \
-	wp config get --format=dotenv | grep 'WP_'
-
-#
-#
-#
-
 echo "> Making the SSH user (id 1001) the owner of /opt/bitnami/wordpress and wp-config.php file ..."
 
 chown -RP 1001 /opt/bitnami/wordpress/ /bitnami/wordpress/wp-config.php
