@@ -57,3 +57,14 @@ cd /tmp && \
 	sudo mv wp-cli.phar /usr/local/bin/wp && \
 	cd /opt/bitnami/wordpress && \
 	wp --info
+
+#
+#
+#
+
+echo "> Making the SSH user (id ${PUID}) the owner of /opt/bitnami/wordpress/ ..."
+
+set -x
+chmod 640 /bitnami/wordpress/wp-config.php || true
+
+chown -RP ${PUID} /bitnami/wordpress/ /opt/bitnami/wordpress/ || true
