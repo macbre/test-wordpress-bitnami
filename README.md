@@ -1,5 +1,6 @@
 test-wordpress-bitname
 ======================
+[![Test containers](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml/badge.svg)](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml)
 
 This repo contains the Docker Compose setup for [the Bitnami-powered WordPress instance](https://hub.docker.com/r/bitnami/wordpress/) with SSH access and `wp-cli` installed.
 
