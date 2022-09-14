@@ -66,6 +66,7 @@ jobs:
 
           # list config settings
           ssh_wp wp config get --format=dotenv | grep WP_
+          docker-compose exec -T ssh-dev wp config get | grep WP_
 
           # list files
           ssh_wp id
