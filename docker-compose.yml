@@ -102,6 +102,7 @@ services:
       # wp-cli YAML config file
       # https://make.wordpress.org/cli/handbook/references/config/#config-files
       - ./wp-cli-config.yml:/home/wordpress/.wp-cli/config.yml:ro
+      - ./wp-cli-config.yml:/root/.wp-cli/config.yml:ro
 
 volumes:
 
