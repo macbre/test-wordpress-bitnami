@@ -27,15 +27,17 @@ jobs:
 
           echo -n "Waiting for the WordPress container "
           while true; do
-            if [[ $(docker inspect test-wordpress-bitnami-wordpress-1 | jq -r .[].State.Health.Status) == "healthy" ]]; then
+            if [[ $(docker inspect test-wordpress-bitnami_wordpress_1 | jq -r .[].State.Health.Status) == "healthy" ]]; then
               break
             fi
             echo -n '.'
             sleep 1
           done
-
           echo
+
+          set -x
           docker ps
+          docker-compose logs
 
     - name: Is WordPress up and running?
       run: |
