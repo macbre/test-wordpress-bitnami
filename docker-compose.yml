@@ -29,8 +29,8 @@ services:
       WORDPRESS_EXTRA_WP_CONFIG_CONTENT: "define( 'JETPACK_SIGNATURE__HTTP_PORT', 8080 );"
 
     volumes:
-      # see the README.md file on how to regenerate the keys pair
-      - "./wordpress-setup.sh:/docker-entrypoint-initdb.d/wordpress-setup.sh:ro"
+      # run the setup script after WordPress container is set up
+      - "./wordpress-setup.sh:/post-init.d/wordpress-setup.sh:ro"
 
       # data persistency and sharing with SSH container
       - "wordpress_data:/bitnami/wordpress"
