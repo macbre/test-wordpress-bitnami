@@ -17,6 +17,7 @@ You can provide some env variables via `.env` file:
 * `SSH_PASSWORD` (defaults to `p4ssw0rd`)
 * `WORDPRESS_DATABASE_PASSWORD` (defaults to `p4ssw0rd`)
 * `WORDPRESS_SITE_URL` (defaults to `http://localhost:8888`)
+* `WORDPRESS_HOSTNAME` (used to add routing label for Traefik, e.g. `wptest.myself.dev`)
 * `WORDPRESS_HTTP_PORT` (defaults to `8888`)
 
 > You can use `head -c 500 /dev/urandom | md5 | base64` to generate them.
