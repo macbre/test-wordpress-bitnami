@@ -43,6 +43,7 @@ services:
       traefik.http.routers.wordpress.tls.certresolver: letsencrypt
       traefik.http.routers.wordpress.rule: Host(`${WORDPRESS_HOSTNAME:-wptest.dev.local}`)
       # https://doc.traefik.io/traefik/routing/services/#health-check
+      traefik.http.services.wordpress.loadbalancer.server.port: ${WORDPRESS_HTTP_PORT:-8888}
       traefik.http.services.wordpress.loadbalancer.healthCheck.path: /wp-json/
       traefik.http.services.wordpress.loadbalancer.healthCheck.method: HEAD
 
