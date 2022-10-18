@@ -51,8 +51,8 @@ services:
       traefik.http.services.wordpress.loadbalancer.healthCheck.interval: "10s"
 
     healthcheck:
-      test: 'curl http://0.0.0.0:8080/wp-json/ -sI -H "User-Agent: curl/healthcheck"'
-      interval: 1m
+      test: 'pgrep nginx'
+      interval: 10s
       timeout: 1s
       retries: 5
 
