@@ -37,9 +37,22 @@ services:
       - "wordpress_data:/bitnami/wordpress"
       - "opt_bitnami_data:/opt/bitnami/wordpress"
 
+    # https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
+    labels:
+      traefik.enable: true
+      traefik.http.routers.wordpress.tls.certresolver: letsencrypt
+      traefik.http.routers.wordpress.rule: Host(`${WORDPRESS_HOSTNAME:-wptest.dev.local}`)
+      # https://doc.traefik.io/traefik/routing/services/#servers
+      traefik.http.services.wordpress.loadbalancer.server.port: "8080"
+      # https://doc.traefik.io/traefik/routing/services/#health-check
+      traefik.http.services.wordpress.loadbalancer.healthCheck.path: "/wp-json"
+      traefik.http.services.wordpress.loadbalancer.healthCheck.method: "HEAD"
+      traefik.http.services.wordpress.loadbalancer.healthCheck.scheme: "http"
+      traefik.http.services.wordpress.loadbalancer.healthCheck.interval: "10s"
+
     healthcheck:
-      test: 'curl http://0.0.0.0:8080/wp-json/ -sI -H "User-Agent: curl/healthcheck"'
-      interval: 1m
+      test: 'pgrep nginx'
+      interval: 10s
       timeout: 1s
       retries: 5
 
@@ -109,3 +122,12 @@ volumes:
   mariadb:
   opt_bitnami_data:
   wordpress_data:
+
+# make the wordpress container discoverable by traefik
+# https://docs.docker.com/compose/networking/#configure-the-default-network
+#
+# docker network create public-network
+networks:
+  default:
+    name: public-network
+    external: true
