@@ -49,7 +49,6 @@ services:
       traefik.http.services.wordpress.loadbalancer.healthCheck.method: "HEAD"
       traefik.http.services.wordpress.loadbalancer.healthCheck.scheme: "http"
       traefik.http.services.wordpress.loadbalancer.healthCheck.interval: "10s"
-      traefik.http.services.wordpress.loadbalancer.healthCheck.hostname: "wordpress"
 
     healthcheck:
       test: 'curl http://0.0.0.0:8080/wp-json/ -sI -H "User-Agent: curl/healthcheck"'
