@@ -2,7 +2,7 @@ test-wordpress-bitnami
 ======================
 [![Test containers](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml/badge.svg)](https://github.com/macbre/test-wordpress-bitnami/actions/workflows/ci.yml)
 
-This repo contains the Docker Compose setup for [the Bitnami-powered WordPress instance](https://hub.docker.com/r/bitnami/wordpress/) with SSH access and `wp-cli` installed.
+This repo contains the Docker Compose setup for [the Bitnami-powered WordPress instance](https://hub.docker.com/r/bitnami/wordpress/) with SSH access and `wp-cli` installed. Can [be run easily behind Traefik](https://github.com/macbre/test-wordpress-bitnami#behind-traefik-proxy). 
 
 Once `docker-compose up -d` is run (and the MySQL and WordPress is set up for the first time) you can:
 
