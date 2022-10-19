@@ -73,3 +73,33 @@ lrwxrwxrwx  1 wordpress root        29 Sep 13 12:08 wp-content -> /bitnami/wordp
 ```
 ssh-keygen -t ed25519 -f ssh_key -N ''
 ```
+
+## Behind Traefik proxy
+
+This container is ready [to be put behind Traefik](https://github.com/macbre/docker-traefik).
+
+1. [Clone the repo](https://github.com/macbre/docker-traefik) and run the Traefik container. 
+2. Change your WordPress install to use https:
+
+```
+WORDPRESS_HTTP_PORT=8181
+WORDPRESS_SITE_URL="https://<your domain, e.g. test.myself.dev>/"
+WORDPRESS_HOSTNAME=<your domain, e.g. test.myself.dev>
+```
+
+3. The requests reaching your WordPress container will be using HTTP (TLS is terminated at the Traefik level). So make sure to pretent that WordPress is handling https requests to avoid redirect loops:
+
+```php
+// Add this to your wp-config.php
+// ...
+// fix redirects loope when accessing /wp-admin and wp-login.php
+// https://wordpress.stackexchange.com/questions/170288/force-ssl-admin-not-working
+define('FORCE_SSL_ADMIN', true);
+
+// a comma-separated list e.g. http,https
+if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+       $_SERVER['HTTPS']='on';
+}
+
+/* That's all, stop editing! Happy publishing. */
+```
