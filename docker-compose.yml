@@ -9,7 +9,7 @@ services:
   # https://github.com/bitnami/containers/tree/main/bitnami/wordpress-nginx#readme
   # wp-content files are owned by 1001:root
   wordpress:
-    image: bitnami/wordpress-nginx:6.0.2
+    image: bitnami/wordpress-nginx:6.3.1
     hostname: wordpress
     restart: unless-stopped
     ports:
@@ -58,9 +58,9 @@ services:
       timeout: 1s
       retries: 5
 
-  # https://github.com/bitnami/bitnami-docker-mariadb
+  # https://hub.docker.com/r/bitnami/mariadb/tags
   db-dev:
-    image: docker.io/bitnami/mariadb:10.6
+    image: docker.io/bitnami/mariadb:10.10.6
     hostname: mariadb
     restart: unless-stopped
     mem_limit: 128M
@@ -76,9 +76,9 @@ services:
     healthcheck:
       # use $$ to escape env variables
       test: 'mysql --user=$$MARIADB_USER --password=$$MARIADB_PASSWORD $$MARIADB_DATABASE -e "SHOW TABLES"'
-      interval: 30s
-      timeout: 5s
-      retries: 10
+      interval: 120s
+      timeout: 1s
+      retries: 1
 
   # https://docs.linuxserver.io/images/docker-openssh-server
   # https://github.com/linuxserver/docker-openssh-server/pkgs/container/openssh-server
