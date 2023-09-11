@@ -1,7 +1,7 @@
 # This file is used to set up a WordPress instance that uses Bitnami images
 #
 # It expects WP_HOME and WORDPRESS_DATABASE_PASSWORD env variables to be set
-version: "3.4"
+version: "2.4"
 
 services:
 
@@ -14,6 +14,8 @@ services:
     restart: always
     ports:
       - ${WORDPRESS_HTTP_PORT:-8888}:8080
+
+    mem_limit: 92M
 
     environment:
       WORDPRESS_BLOG_NAME: 'My test Bitnami WordPress'
@@ -61,6 +63,7 @@ services:
     image: docker.io/bitnami/mariadb:10.6
     hostname: mariadb
     restart: always
+    mem_limit: 128M
     environment:
       MARIADB_DATABASE: wp_db
       MARIADB_USER: wp_user
@@ -84,6 +87,9 @@ services:
     restart: always
     ports:
       - '62222:2222'
+
+    mem_limit: 32M
+
     environment:
       PASSWORD_ACCESS: 'true'
       USER_NAME: wordpress
