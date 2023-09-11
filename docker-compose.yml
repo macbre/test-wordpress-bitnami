@@ -11,12 +11,12 @@ services:
   wordpress:
     image: bitnami/wordpress-nginx:6.0.2
     hostname: wordpress
-    restart: always
+    restart: unless-stopped
     ports:
       - ${WORDPRESS_HTTP_PORT:-8888}:8080
 
     mem_limit: 92M
-    cpus: "0.25"
+    cpus: "0.05"
     environment:
       WORDPRESS_BLOG_NAME: 'My test Bitnami WordPress'
       WORDPRESS_DATABASE_NAME: wp_db
@@ -62,9 +62,9 @@ services:
   db-dev:
     image: docker.io/bitnami/mariadb:10.6
     hostname: mariadb
-    restart: always
+    restart: unless-stopped
     mem_limit: 128M
-    cpus: "0.1"
+    cpus: "0.05"
     environment:
       MARIADB_DATABASE: wp_db
       MARIADB_USER: wp_user
@@ -85,7 +85,7 @@ services:
   ssh-dev:
     image: ghcr.io/linuxserver/openssh-server:8.8_p1-r1-ls91
     hostname: openssh-server
-    restart: always
+    restart: unless-stopped
     ports:
       - '62222:2222'
 
