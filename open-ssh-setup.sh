@@ -6,7 +6,7 @@ set -u  # Treat unset variables as an error and exit immediately
 echo "> Installing PHP extensions and some utilities ..."
 
 apk update && \
-	apk add vim && \
+	apk add mysql-client vim && \
 	apk add php8-cli php8-gd php8-mysqli php8-xml && \
 	ln -sf /usr/bin/php8 /usr/bin/php && \
 	php -v && php -m
