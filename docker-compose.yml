@@ -122,11 +122,25 @@ services:
       - ./wp-cli-config.yml:/home/wordpress/.wp-cli/config.yml:ro
       - ./wp-cli-config.yml:/root/.wp-cli/config.yml:ro
 
+  # https://hub.docker.com/_/redis 
+  redis:
+    image: redis:7.2.1-alpine
+    hostname: wp-redis
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:56379:6379'
+
+    mem_limit: 128M
+
+    volumes:
+      - "redis_data:/data"
+
 volumes:
 
   mariadb:
   opt_bitnami_data:
   wordpress_data:
+  redis_data:
 
 # make the wordpress container discoverable by traefik
 # https://docs.docker.com/compose/networking/#configure-the-default-network
