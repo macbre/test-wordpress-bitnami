@@ -135,6 +135,12 @@ services:
     volumes:
       - "redis_data:/data"
 
+    healthcheck:
+      test: 'redis-cli ping'
+      interval: 20s
+      timeout: 1s
+      retries: 3
+
 volumes:
 
   mariadb:
