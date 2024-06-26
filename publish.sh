@@ -30,7 +30,7 @@ POST_ID="$(cat /tmp/post_id)"
 
 # attach a photo to the new post
 # e.g. https://fastly.picsum.photos/id/828/450/150.jpg?hmac=AcD5dfz3UrPo15KUhXFzaxSWBrL7qQ13vbXWZsEaSAE
-PHOTO_URL="$(curl -v 'https://picsum.photos/1280/500' 2>&1 | grep -i 'location:' | grep -Eo 'https[A-Za-z:/.0-9?=+-]+')"
+PHOTO_URL="$(curl -v 'https://picsum.photos/1280/500' 2>&1 | grep -i 'location:' | grep -Eo 'https[A-Za-z:/.0-9?=+-_]+')"
 
 log "Uploading an image from <${PHOTO_URL}> and making it a featured image for #${POST_ID} post ..."
 
