@@ -21,7 +21,7 @@ set -x
 
 # -T disable pseudo-tty allocation
 # https://developer.wordpress.org/cli/commands/post/create/
-docker-compose -f ${DIRECTORY}/docker-compose.yml exec -T wordpress \
+docker compose -f ${DIRECTORY}/docker-compose.yml exec -T wordpress \
 	wp post create --post_title="${TITLE}" --post_content="${CONTENT}" --post_status='publish' --porcelain | tee /tmp/post_id
 
 set +x
@@ -35,7 +35,7 @@ PHOTO_URL="$(curl -v 'https://picsum.photos/1280/500' 2>&1 | grep -i 'location:'
 log "Uploading an image from <${PHOTO_URL}> and making it a featured image for #${POST_ID} post ..."
 
 # https://developer.wordpress.org/cli/commands/media/import/
-docker-compose -f ${DIRECTORY}/docker-compose.yml exec -T wordpress \
+docker compose -f ${DIRECTORY}/docker-compose.yml exec -T wordpress \
 	wp media import "${PHOTO_URL}" \
 		--title="Image" --caption="An image" --featured_image --post_id=${POST_ID} \
 
