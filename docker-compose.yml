@@ -1,8 +1,6 @@
 # This file is used to set up a WordPress instance that uses Bitnami images
 #
 # It expects WP_HOME and WORDPRESS_DATABASE_PASSWORD env variables to be set
-version: "3.9"
-
 services:
 
   # https://hub.docker.com/r/bitnami/wordpress-nginx/
@@ -21,7 +19,7 @@ services:
       WORDPRESS_DATABASE_NAME: wp_db
       WORDPRESS_DATABASE_USER: wp_user
       WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD:-p4ssw0rd}
-      WORDPRESS_DEBUG: 'true'  # https://wordpress.org/support/article/debugging-in-wordpress/
+      # WORDPRESS_DEBUG: 'true'  # https://wordpress.org/support/article/debugging-in-wordpress/
 
       # set up the wp-config.php
       WORDPRESS_SITE_URL: ${WORDPRESS_SITE_URL:-http://localhost:8888}
