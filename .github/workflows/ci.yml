@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Pull images
-      run: docker-compose pull
+      run: docker compose pull
 
     - name: Set up and start the containers
       run: |
@@ -21,7 +21,7 @@ jobs:
         ssh-keygen -t ed25519 -f ssh_key -N ''
         
         docker network create public-network
-        docker-compose up -d
+        docker compose up -d
 
     - name: Wait for the WordPress container to be up
       timeout-minutes: 2
@@ -30,7 +30,7 @@ jobs:
 
           echo -n "Waiting for the WordPress container "
           while true; do
-            if [[ $(docker inspect test-wordpress-bitnami_wordpress_1 | jq -r .[].State.Health.Status) == "healthy" ]]; then
+            if [[ $(docker inspect test-wordpress-bitnami-wordpress-1 | jq -r .[].State.Health.Status) == "healthy" ]]; then
               break
             fi
             echo -n '.'
@@ -42,7 +42,7 @@ jobs:
 
           set -x
           docker ps
-          docker-compose logs
+          docker compose logs
 
     - name: Is WordPress up and running?
       run: |
@@ -68,7 +68,7 @@ jobs:
 
           # list config settings
           ssh_wp wp config get --format=dotenv | grep WP_
-          docker-compose exec -T ssh-dev wp config get | grep WP_
+          docker compose exec -T ssh-dev wp config get | grep WP_
 
           # list files
           ssh_wp id
@@ -79,4 +79,4 @@ jobs:
 
     - name: Show logs
       if: ${{ always() }}  # run this step regardless of the tests failing or passing
-      run: docker-compose logs
+      run: docker compose logs
