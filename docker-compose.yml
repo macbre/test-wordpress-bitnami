@@ -120,9 +120,9 @@ services:
       - ./wp-cli-config.yml:/home/wordpress/.wp-cli/config.yml:ro
       - ./wp-cli-config.yml:/root/.wp-cli/config.yml:ro
 
-  # https://hub.docker.com/_/redis 
+  # https://hub.docker.com/r/valkey/valkey
   redis:
-    image: redis:7.4.0-alpine
+    image: valkey/valkey:8.0.2-alpine
     hostname: wp-redis
     restart: unless-stopped
     ports:
@@ -130,7 +130,7 @@ services:
 
     mem_limit: 192M
 
-    command: redis-server /opt/redis.conf
+    command: /opt/redis.conf
     volumes:
       - "./redis.conf:/opt/redis.conf:ro"
 
