@@ -7,7 +7,7 @@ services:
   # https://github.com/bitnami/containers/tree/main/bitnami/wordpress-nginx#readme
   # wp-content files are owned by 1001:root
   wordpress:
-    image: bitnami/wordpress-nginx:6.3.1
+    image: bitnami/wordpress-nginx:6.7.1
     hostname: wordpress
     restart: unless-stopped
     ports:
