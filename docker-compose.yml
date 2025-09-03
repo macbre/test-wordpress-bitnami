@@ -7,7 +7,7 @@ services:
   # https://github.com/bitnami/containers/tree/main/bitnami/wordpress-nginx#readme
   # wp-content files are owned by 1001:root
   wordpress:
-    image: bitnami/wordpress-nginx:6.3.1
+    image: bitnami/wordpress-nginx:6.8.2
     hostname: wordpress
     restart: unless-stopped
     ports:
@@ -33,7 +33,7 @@ services:
       - "./wordpress-setup.sh:/docker-entrypoint-init.d/wordpress-setup.sh:ro"
 
       # data persistency and sharing with SSH container
-      - "wordpress_data:/bitnami/wordpress"
+      - "wordpress_data:/bitnami/wordpress-nginx"
       - "opt_bitnami_data:/opt/bitnami/wordpress"
 
     # https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
@@ -108,7 +108,7 @@ services:
       - "./ssh_key.pub:/config/.ssh_key.pub"
 
       # allow modifying WordPress files via SSH
-      - "wordpress_data:/bitnami/wordpress"
+      - "wordpress_data:/bitnami/wordpress-nginx"
       - "opt_bitnami_data:/opt/bitnami/wordpress"
 
       # Install php-cli inside the ssh container
